@@ -16,8 +16,6 @@
  * This histogram bin order will be same order as the binSelector.
  */
 
-typedef std::vector<std::tuple<int, int>> Anomalies;
-
 class Histogram
 {
 private:

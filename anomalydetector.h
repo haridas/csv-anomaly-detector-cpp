@@ -42,11 +42,12 @@ class AnomalyDetector
 
     /**
      * @brief findEuclidianDistance
-     * Find distnace for two points, in our case we are checking only for
-     * one dimention values as we are using normalized histograms.
+     *
+     * Find distabce between these two vectors using euclidian distance
+     * equation.
      * @return float
      */
-    float findEuclidianDistance(float, float);
+    float findEuclidianDistance(std::vector<float>, std::vector<float>);
 
 public:
     AnomalyDetector();
@@ -54,14 +55,24 @@ public:
 
     void setAnomalyThreshold(int percentile);
 
+    /**
+     * @brief findAnomalies
+     *
+     * Method which calculate the anomalies.
+     */
+    void findAnomalies();
+
     // Report the anomaly of a csv cell, with (raw, column) index ( zero indexed ).
-    Anomalies getAnomalies();
+    std::vector<std::tuple<int, float>> getAnomalies();
 
     std::vector<bool> getAnomalyVector();
 
     std::vector<float> getMeanHistogram() {
         return this->meanHistogram;
     }
+
+    void prettyPrintEuclidianDistanceVector();
+    void prettyPrintAnomalyVector();
 
 };
 

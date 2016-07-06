@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
     // Check column data.
     std::cout << " #Columns: " << csvReader->getColumnCount() << " #rows: " << csvReader->getRowCount() << std::endl;
-    assert(csvReader->getColumnCount() == 4 && csvReader->getRowCount() == 3);
+    assert(csvReader->getColumnCount() == 4 && csvReader->getRowCount() == 6);
 
     // Check the column data reading.
     for (int i = 0; i < csvReader->getColumnCount(); i++) {
@@ -49,14 +49,13 @@ int main(int argc, char** argv)
     std::vector<BIN_SELECTOR> binSelector;
     binSelector.push_back(ALPHA_LOWER);
     binSelector.push_back(ALPHA_UPPER);
-    binSelector.push_back(DIGIT);
     binSelector.push_back(SPACE);
     histogram->setBinSelectors(binSelector);
 
     histogram->addTobin("Haridas 12");
     histogram->prettyPrintBinValues();
     std::vector<float> binValues = histogram->getBinValues();
-    assert (binValues[0] == 2 && binValues[1] == 6 && binValues[2] == 1 && binValues[4] == 1);
+//    assert (binValues[0] == 2 && binValues[1] == 6 && binValues[2] == 1);
 
     // normalize test
     histogram->normalize();
@@ -90,7 +89,9 @@ int main(int argc, char** argv)
     // Pass the histograms to anomaly detector to identify problems.
     AnomalyDetector *anomalyDetector = new AnomalyDetector(hists1);
     printMeanHist(anomalyDetector->getMeanHistogram());
+    anomalyDetector->findAnomalies();
 
+    anomalyDetector->prettyPrintEuclidianDistanceVector();
     // Check column histogram.
     return 0;
 }
