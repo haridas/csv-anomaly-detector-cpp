@@ -1,7 +1,19 @@
-#include <iostream>
+#include<iostream>
+#include<assert.h>
+
 #include "csvreader.h"
+#include "histogram.h"
 
 using namespace std;
+
+
+//template<typename T>
+void printColumnVector(std::vector<std::string> vector) {
+    for(std::vector<string>::iterator iter = vector.begin(); iter != vector.end(); iter ++) {
+        std::cout << *iter  << std::endl;
+    }
+
+}
 
 int main(int argc, char** argv)
 {
@@ -12,10 +24,23 @@ int main(int argc, char** argv)
 
     CSVReader *csvReader = new CSVReader();
     csvReader->read("/home/haridas/projects/personal/gitlap/csv-anomaly-detector/data.csv");
-    std::cout << " #Columns: " + csvReader->getColumnCount() << std::endl;
 
+
+    // Check column data.
+    std::cout << " #Columns: " << csvReader->getColumnCount() << " #rows: " << csvReader->getRowCount() << std::endl;
+
+    // Check the column data reading.
+    for (int i = 0; i < csvReader->getColumnCount(); i++) {
+        std::vector<std::string> columnData = csvReader->getColumnData(i);
+        assert (columnData.size() == csvReader->getRowCount());
+        printColumnVector(columnData);
+    }
+
+    // Check column histogram.
     return 0;
 }
+
+
 
 
 
