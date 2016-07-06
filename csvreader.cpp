@@ -11,7 +11,6 @@ void CSVReader::read(std::string fileName) {
     this->refreshStream(this->fileStream);
     this->setColumnCount();
     this->setRowCount();
-
 }
 
 void CSVReader::setColumnCount() {

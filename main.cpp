@@ -1,8 +1,9 @@
 #include<iostream>
 #include<assert.h>
 
-#include "csvreader.h"
 #include "histogram.h"
+#include "csvreader.h"
+#include "binselector.h"
 
 using namespace std;
 
@@ -12,7 +13,6 @@ void printColumnVector(std::vector<std::string> vector) {
     for(std::vector<string>::iterator iter = vector.begin(); iter != vector.end(); iter ++) {
         std::cout << *iter  << std::endl;
     }
-
 }
 
 int main(int argc, char** argv)
@@ -33,8 +33,23 @@ int main(int argc, char** argv)
     for (int i = 0; i < csvReader->getColumnCount(); i++) {
         std::vector<std::string> columnData = csvReader->getColumnData(i);
         assert (columnData.size() == csvReader->getRowCount());
-        printColumnVector(columnData);
+//        printColumnVector(columnData);
     }
+
+    // Histogram bin selector checks.
+    Histogram *histogram = new Histogram();
+
+    std::vector<BIN_SELECTOR> binSelector;
+    binSelector.push_back(ALPHA_LOWER);
+    binSelector.push_back(ALPHA_UPPER);
+    binSelector.push_back(DIGIT);
+    binSelector.push_back(SPACE);
+    histogram->setBinSelectors(binSelector);
+
+    histogram->addTobin("Haridas 12");
+    histogram->prettyPrintBinValues();
+    std::vector<float> binValues = histogram->getBinValues();
+    assert (binValues[0] == 2 && binValues[1] == 6 && binValues[2] == 1 && binValues[4] == 1);
 
     // Check column histogram.
     return 0;
