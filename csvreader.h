@@ -7,6 +7,13 @@
 #include<sstream>
 #include<algorithm>
 
+/**
+ * @brief The CSVReader class
+ *
+ * Read CSV and keep it in a file stream, and provide all
+ * utility methods required to find rows with anomaly.
+ */
+
 class CSVReader
 {
     std::string csvFile = "";

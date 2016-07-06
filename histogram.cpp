@@ -5,6 +5,10 @@ Histogram::Histogram(){
 
 }
 
+//Histogram::Histogram(std::vector<std::string> dataVector) {
+//    this->addTobin(dataVector);
+//}
+
 void Histogram::setBinSelectors(std::vector<BIN_SELECTOR> binMachers) {
     this->binSelectors = binMachers;
 }
@@ -52,12 +56,19 @@ void Histogram::addTobin(std::string value) {
     }
 }
 
-float Histogram::getMean() {
-
-}
+//void Histogram::addTobin(std::vector<std::string> dataVector) {
+//    for(std::vector<std::string>::iterator iter = dataVector.begin();
+//        iter != dataVector.end(); iter++) {
+//        this->addTobin(*iter);
+//    }
+//}
 
 void Histogram::normalize() {
-
+    this->numObservations = std::accumulate(this->binValues.begin(), this->binValues.end(), 0);
+    for(int i = 0; i < this->binValues.size(); i++) {
+        if (this->numObservations > 0)
+            this->normalizedBinValues[i] = this->binValues[i] / this->numObservations;
+    }
 }
 
 void Histogram::prettyPrintBin(std::vector<float> bin) {

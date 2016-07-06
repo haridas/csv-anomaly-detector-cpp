@@ -80,6 +80,6 @@ void CSVReader::refreshStream(std::ifstream &csvFileStream) {
     std::string line;
     std::getline(csvFileStream, line);
 
-    std::cout << "Skiped csv header: " << line.length() << " Header: " << line << std::endl;
+//    std::cout << "Skiped csv header: " << line.length() << " Header: " << line << std::endl;
 
 }

@@ -4,6 +4,7 @@
 #include "histogram.h"
 #include "csvreader.h"
 #include "binselector.h"
+#include "anomalydetector.h"
 
 using namespace std;
 
@@ -15,6 +16,13 @@ void printColumnVector(std::vector<std::string> vector) {
     }
 }
 
+void printMeanHist(std::vector<float> vector) {
+    for(std::vector<float>::iterator iter = vector.begin(); iter != vector.end(); iter ++) {
+        std::cout << *iter << " - ";
+    }
+    std::cout << std::endl;
+}
+
 int main(int argc, char** argv)
 {
     if(argc != 2) {
@@ -23,17 +31,16 @@ int main(int argc, char** argv)
     }
 
     CSVReader *csvReader = new CSVReader();
-    csvReader->read("/home/haridas/projects/personal/gitlap/csv-anomaly-detector/data.csv");
-
+    csvReader->read(argv[1]);
 
     // Check column data.
     std::cout << " #Columns: " << csvReader->getColumnCount() << " #rows: " << csvReader->getRowCount() << std::endl;
+    assert(csvReader->getColumnCount() == 4 && csvReader->getRowCount() == 3);
 
     // Check the column data reading.
     for (int i = 0; i < csvReader->getColumnCount(); i++) {
         std::vector<std::string> columnData = csvReader->getColumnData(i);
         assert (columnData.size() == csvReader->getRowCount());
-//        printColumnVector(columnData);
     }
 
     // Histogram bin selector checks.
@@ -50,6 +57,39 @@ int main(int argc, char** argv)
     histogram->prettyPrintBinValues();
     std::vector<float> binValues = histogram->getBinValues();
     assert (binValues[0] == 2 && binValues[1] == 6 && binValues[2] == 1 && binValues[4] == 1);
+
+    // normalize test
+    histogram->normalize();
+    histogram->prettyPrintNormalizedBinValues();
+    binValues = histogram->getNormalizedBinValues();
+//    assert (binValues[0] == 0.2 && binValues[1] == 0.6 && binValues[2] == 0.1 && binValues[4] == 0.1);
+
+
+
+    /**
+      * AnomalyDetector Class test cases.
+      */
+
+    // Get column histograms;
+    std::vector<std::string> col1 = csvReader->getColumnData(0);
+    std::vector<Histogram> hists1;
+    std::vector<BIN_SELECTOR> select1;
+    select1.push_back(ALPHA_LOWER);
+    select1.push_back(ALPHA_UPPER);
+    select1.push_back(DIGIT);
+    select1.push_back(SPACE);
+    for(std::vector<std::string>::iterator iter = col1.begin();
+        iter != col1.end(); iter++) {
+        Histogram *hist = new Histogram();
+        hist->setBinSelectors(select1);
+        hist->addTobin(*iter);
+        hist->normalize();
+        hists1.push_back(*hist);
+    }
+
+    // Pass the histograms to anomaly detector to identify problems.
+    AnomalyDetector *anomalyDetector = new AnomalyDetector(hists1);
+    printMeanHist(anomalyDetector->getMeanHistogram());
 
     // Check column histogram.
     return 0;

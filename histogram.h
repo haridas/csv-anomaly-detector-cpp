@@ -2,7 +2,8 @@
 #define HISTOGRAM_H
 
 #include<iostream>
-#include<regex>
+#include<algorithm>
+#include<numeric>
 
 #include "binselector.h"
 
@@ -15,16 +16,18 @@
  * This histogram bin order will be same order as the binSelector.
  */
 
+typedef std::vector<std::tuple<int, int>> Anomalies;
+
 class Histogram
 {
 private:
     std::vector<BIN_SELECTOR> binSelectors;
     int numObservations;
-    int numBins; // Same as number of @binSelectors length.
+    int numBins = BIN_SELECTOR_SIZE; // Same as number of @binSelectors length.
 
     // Initialize the histogram bins.
-    std::vector<float> binValues = std::vector<float>(BIN_SELECTOR_SIZE, 0);
-    std::vector<float> normalizedBinValues = std::vector<float>(BIN_SELECTOR_SIZE, 0);
+    std::vector<float> binValues = std::vector<float>(numBins, 0);
+    std::vector<float> normalizedBinValues = std::vector<float>(numBins, 0);
 
     void prettyPrintBin(std::vector<float> bin);
 public:
@@ -44,12 +47,6 @@ public:
      * @param value
      */
     void addTobin(std::string value);
-
-    /**
-     * @brief getMean Histogram mean value.
-     * @return
-     */
-    float getMean();
 
     /**
      * @brief normalize Normalize the histogram to make it uniform for all cell.
