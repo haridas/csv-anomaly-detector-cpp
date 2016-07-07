@@ -8,13 +8,13 @@ Used only the STL, no third part library included.
 
 How to build and run
 --------------------
-
+```bash
 $ mkdir build && cd build
 $ cmake ..
 $ make
 
 $ ./csv-anomaly-detector your.csv
-
+```
 
 TODO
 ----
