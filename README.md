@@ -19,5 +19,5 @@ $ ./csv-anomaly-detector your.csv
 TODO
 ----
 
-1. Report the anomaly for row wise cleanly.
+1. Row wise anomaly reporting with info about which cell has problem.
 2. Add more tests.
